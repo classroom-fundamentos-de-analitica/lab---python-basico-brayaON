@@ -11,7 +11,12 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+from functools import reduce
+from collections import Counter, defaultdict
 
+file = open('./data.csv', 'r').readlines()
+file = [ line.replace('\n', '').split('\t') for line in file ]
+# print(file)
 
 def pregunta_01():
     """
@@ -21,8 +26,11 @@ def pregunta_01():
     214
 
     """
-    return
 
+    L = [ int(row[1]) for row in file ]
+    ans = reduce(lambda x1, x2 : x1 + x2, L)
+
+    return ans
 
 def pregunta_02():
     """
@@ -39,7 +47,11 @@ def pregunta_02():
     ]
 
     """
-    return
+    L = [ row[0] for row in file ]
+    cnt = Counter(L)
+
+    ans = sorted(list(cnt.items()))
+    return ans
 
 
 def pregunta_03():
@@ -57,7 +69,14 @@ def pregunta_03():
     ]
 
     """
-    return
+    L = [ (row[0], int(row[1])) for row in file ]
+    d = {}
+    for k, v in L:
+        d.setdefault(k, 0)
+        d[k] += v
+    
+    ans = sorted(list(d.items()))
+    return ans;
 
 
 def pregunta_04():
@@ -82,7 +101,12 @@ def pregunta_04():
     ]
 
     """
-    return
+    L = [ row[2].split('-')[1] for row in file ]
+    cnt = Counter(L)
+
+    ans = sorted(list(cnt.items()))
+    return ans;
+
 
 
 def pregunta_05():
@@ -100,7 +124,14 @@ def pregunta_05():
     ]
 
     """
-    return
+
+    L = [ (row[0], int(row[1])) for row in file ]
+    d = {}
+    for k, v in L:
+        d.setdefault(k, []).append(v)
+
+    ans = sorted([ (k, max(v), min(v)) for k, v in d.items() ])
+    return ans
 
 
 def pregunta_06():
@@ -125,8 +156,15 @@ def pregunta_06():
     ]
 
     """
-    return
+    L = [ row[4].split(',') for row in file ]
+    L = [ (x.split(':')[0], int(x.split(':')[1])) for l in L for x in l ]
 
+    d = {}
+    for k, v in L:
+        d.setdefault(k, []).append(v)
+
+    ans = sorted([ (k, min(v), max(v)) for k, v in d.items() ])
+    return ans
 
 def pregunta_07():
     """
@@ -149,7 +187,13 @@ def pregunta_07():
     ]
 
     """
-    return
+    L = [ (row[0], int(row[1])) for row in file ]
+    d = {}
+    for k, v in L:
+        d.setdefault(v, []).append(k)
+
+    ans = sorted(list(d.items()))
+    return ans
 
 
 def pregunta_08():
@@ -174,7 +218,15 @@ def pregunta_08():
     ]
 
     """
-    return
+    L = [ (row[0], int(row[1])) for row in file ]
+    d = {}
+    for k, v in L:
+        d.setdefault(v, [])
+        if k not in d[v]:
+            d[v].append(k)
+
+    ans = sorted(list(d.items()))
+    return ans
 
 
 def pregunta_09():
@@ -197,7 +249,12 @@ def pregunta_09():
     }
 
     """
-    return
+    L = [ row[4].split(',') for row in file ]
+    L = [ v.split(':')[0] for row in L for v in row ]
+   
+    ans = Counter(L)
+    ans = dict(sorted(ans.items()))
+    return ans
 
 
 def pregunta_10():
@@ -218,7 +275,8 @@ def pregunta_10():
 
 
     """
-    return
+    L = [ (row[0], len(row[3].split(',')), len(row[4].split(','))) for row in file ]
+    return L
 
 
 def pregunta_11():
@@ -239,7 +297,16 @@ def pregunta_11():
 
 
     """
-    return
+    L = [ (int(row[1]), row[3].split(',')) for row in file ]
+
+    d = {}
+    for k, v in L:
+        for x in v:
+            d.setdefault(x, 0)
+            d[x] += k
+    
+    ans = dict(sorted(d.items()))
+    return ans
 
 
 def pregunta_12():
@@ -257,4 +324,13 @@ def pregunta_12():
     }
 
     """
-    return
+    L = [ (row[0], row[4].split(',')) for row in file ]
+    L = [ (row[0], int(d.split(':')[1])) for row in L for d in row[1] ]
+
+    d = {}
+    for k, v in L:
+        d.setdefault(k,0)
+        d[k] += v
+    
+    ans = dict(sorted(d.items()))
+    return ans
