@@ -218,7 +218,7 @@ def pregunta_08():
     ]
 
     """
-    L = [ (row[0], int(row[1])) for row in file ]
+    L = sorted([ (row[0], int(row[1])) for row in file ])
     d = {}
     for k, v in L:
         d.setdefault(v, [])
